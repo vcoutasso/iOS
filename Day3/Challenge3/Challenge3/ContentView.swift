@@ -144,6 +144,7 @@ struct ContentView: View {
             }
             .padding(.horizontal, 25)
         }
+        .frame(minWidth: 0, maxWidth: .infinity)
         .background(LinearGradient(gradient: Gradient(colors: [Color("gradient-lower"), Color("gradient-upper")]), startPoint: .top, endPoint: .bottom))
         .ignoresSafeArea()
     }
