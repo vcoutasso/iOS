@@ -42,5 +42,6 @@ struct SearchBarView_Previews: PreviewProvider {
     
     static var previews: some View {
         MainSearchBarView(searchText: $searchText)
+            .preferredColorScheme(.dark)
     }
 }

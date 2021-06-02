@@ -37,7 +37,6 @@ class ContentViewModel: ObservableObject {
         
         self.objectWillChange.send()
     }
-    
 }
 
 class RecipeService {
