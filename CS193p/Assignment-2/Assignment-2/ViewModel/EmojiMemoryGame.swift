@@ -1,5 +1,5 @@
 //
-//  EmojiMemoryGameManager.swift
+//  EmojiMemoryGame.swift
 //  Assignment-2
 //
 //  Created by Vinícius Couto on 16/07/21.
@@ -7,11 +7,16 @@
 
 import SwiftUI
 
-class EmojiMemoryGameManager: ObservableObject {
+class EmojiMemoryGame: ObservableObject {
+
+    // MARK: - Type Aliases
+
+    typealias Card = MemoryGame<String>.Card
+    typealias Theme = MemoryGame<String>.Theme
 
     // MARK: - Type Variables
 
-    static let themes: [MemoryGame<String>.Theme] = [
+    static private let themes: [Theme] = [
         EmojiThemes.animals,
         EmojiThemes.food,
         EmojiThemes.halloween,
@@ -22,14 +27,14 @@ class EmojiMemoryGameManager: ObservableObject {
 
     // MARK: - Type Functions
 
-    static private func createMemoryGame(theme: MemoryGame<String>.Theme) -> MemoryGame<String> {
+    static private func createMemoryGame(theme: Theme) -> MemoryGame<String> {
         MemoryGame<String>(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
             theme.contents[pairIndex]
         }
     }
 
-    static private func newTheme() -> MemoryGame<String>.Theme {
-        var theme = EmojiMemoryGameManager.themes.randomElement()!
+    static private func newTheme() -> Theme {
+        var theme = EmojiMemoryGame.themes.randomElement()!
 
         if theme.numberOfPairs > theme.contents.count {
             theme.numberOfPairs = theme.contents.count
@@ -46,21 +51,21 @@ class EmojiMemoryGameManager: ObservableObject {
     // MARK: - Published Variables
 
     @Published private var model: MemoryGame<String>
-    @Published var score: Int = 0
+    @Published var score = 0
 
     // MARK: - Variables
 
-    var theme: MemoryGame<String>.Theme
+    var theme: Theme
 
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         model.cards
     }
 
     // MARK: - Initialization
 
     init() {
-        theme = EmojiMemoryGameManager.newTheme()
-        model = EmojiMemoryGameManager.createMemoryGame(theme: theme)
+        theme = EmojiMemoryGame.newTheme()
+        model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
 
     // MARK: - Functions
@@ -86,21 +91,23 @@ class EmojiMemoryGameManager: ObservableObject {
 
     // MARK: - User Intents
 
-    func choose(_ card: MemoryGame<String>.Card) {
-        let wasKnown = card.previouslySeen
-        let matched = model.choose(card)
+    func choose(_ card: Card) {
+        if !card.isMatched {
+            let wasSeen = card.previouslySeen
+            let matched = model.choose(card)
 
-        if matched {
-            score += 2
-        }
-        else if wasKnown {
-            score -= 1
+            if matched {
+                score += 2
+            }
+            else if wasSeen {
+                score -= 1
+            }
         }
     }
 
     func newGame() {
-        theme = EmojiMemoryGameManager.newTheme()
-        model = EmojiMemoryGameManager.createMemoryGame(theme: theme)
+        theme = EmojiMemoryGame.newTheme()
+        model = EmojiMemoryGame.createMemoryGame(theme: theme)
         score = 0
     }
 }
