@@ -13,9 +13,15 @@ class CardManager: ObservableObject {
 
     typealias Card = SetGame.Card
 
-    // MARK: - Constants and Variables
+    // MARK: - Constants
 
     let card: Card
+
+    // MARK: - Variables
+
+    let failedMatchAttempt: Bool
+
+    // MARK: - Computed Variables
 
     var cardColor: Color {
         switch card.color {
@@ -28,10 +34,15 @@ class CardManager: ObservableObject {
         }
     }
 
+    var isCardSelected: Bool {
+        card.isSelected
+    }
+
     // MARK: - Initialization
 
-    init(card: Card) {
+    init(card: Card, failedMatchAttempt: Bool = false) {
         self.card = card
+        self.failedMatchAttempt = failedMatchAttempt
     }
 
     // MARK: - Methods
