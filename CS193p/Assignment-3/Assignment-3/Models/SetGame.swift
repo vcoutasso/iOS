@@ -45,7 +45,9 @@ struct SetGame {
 
     // MARK: - Functions
 
-    mutating func choose(_ card: Card) {
+    mutating func choose(_ card: Card) -> Bool {
+        var isMatch = false
+
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
 
             // Clear selected cards if there are already 3
@@ -66,6 +68,8 @@ struct SetGame {
                     Set(selectedCards.map({ $0.shading })).count != 2 &&
                     Set(selectedCards.map({ $0.shape })).count != 2
                 {
+                    isMatch = true
+                    
                     for selected in selectedCards {
                         if let selectedCardIndex = cards.firstIndex(where: { $0.id == selected.id }) {
                             cards[selectedCardIndex].isMatched = true
@@ -75,6 +79,8 @@ struct SetGame {
                 }
             }
         }
+
+        return isMatch
     }
 
     // MARK: - Structs
