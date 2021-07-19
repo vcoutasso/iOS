@@ -58,9 +58,7 @@ class SetGameManager: ObservableObject {
         objectWillChange.send()
     }
 
-    // FIX: This
     func select(_ card: Card) {
-        // If it was a match, model.numSelectedCards would be 0
         if model.choose(card) {
             score += 10
             if additionalCardsOnTable > 0 { additionalCardsOnTable -= 3 }
